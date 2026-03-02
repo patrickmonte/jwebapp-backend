@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jwebapp-backend-deployment
+  labels:
+    app: jwebapp-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jwebapp-backend
+  template:
+    metadata:
+      labels:
+        app: jwebapp-backend
+    spec:
+      containers:
+      - name: jwebapp-backend
+        image: jwebapp-backend:latest # Replace with your actual image name and tag
+        ports:
+        - containerPort: 8080
+        env:
+        - name: SPRING_DATASOURCE_URL
+          value: "jdbc:postgresql://postgresql-service:5432/auth_db" # Assuming a PostgreSQL service named 'postgresql-service'
+        - name: SPRING_DATASOURCE_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: username
+        - name: SPRING_DATASOURCE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: password
+        - name: APP_JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: jwt-secret
+              key: secret
+        - name: APP_JWT_EXPIRATION_MS
+          value: "86400000" # 24 hours

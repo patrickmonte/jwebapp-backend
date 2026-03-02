@@ -1,4 +1,4 @@
-package com.jwebapp.jwebapp_backend;
+package com.jwebapp.jwebappbackend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
